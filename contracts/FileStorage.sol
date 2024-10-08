@@ -19,8 +19,8 @@ contract FileStorage {
     
     //modificatore memory : indica che una variabile esiste solo durante l'esecuzione della funzione ed eliminata una volta terminata
     function uploadFile(string memory name, string memory content) public {
-        fileCount++;
         files[fileCount] = File(name, content, msg.sender);
+        fileCount++;
     }
     //modificatore view: indica che la funzione quando chiamata può solo leggere lo stato del contratto ma non modificarlo
     function getFile(uint fileId) public view returns (string memory, string memory, address) {

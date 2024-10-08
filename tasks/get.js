@@ -14,7 +14,7 @@ task("get", "le cose forse hanno senso")
     const contract = FileStorage.attach(contractAddress);
     filenum = await contract.getFileNum()
 
-    if(taskArgs.id <= filenum){
+    if(taskArgs.id < filenum){
 
     // Chiama la funzione uploadFile con i parametri forniti
         const [name, content, owner] = await contract.getFile(taskArgs.id);
