@@ -11,5 +11,11 @@
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^5.0.0",
     "hardhat": "^2.22.2"
+  },
+  "dependencies": {
+    "@nomicfoundation/hardhat-ethers": "^3.0.8",
+    "dotenv": "^16.4.5",
+    "ethers": "^6.13.3",
+    "prompt-sync": "^4.2.0"
   }
 }

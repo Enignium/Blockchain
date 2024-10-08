@@ -1,10 +1,10 @@
 {
   "_format": "hh-sol-cache-2",
   "files": {
-    "/home/bantino/Scrivania/Progetti/HardHat-Esempi/contracts/Token.sol": {
-      "lastModificationDate": 1713310928206,
-      "contentHash": "c3660a47e0f5dd75b55385ca86fdf832",
-      "sourceName": "contracts/Token.sol",
+    "/home/bantino/Progetti/HardHat-Esempi/node_modules/hardhat/console.sol": {
+      "lastModificationDate": 1713306396500,
+      "contentHash": "896f68942c3a20e9ae3c3c5bfd3add54",
+      "sourceName": "hardhat/console.sol",
       "solcConfig": {
         "version": "0.8.24",
         "settings": {
@@ -31,16 +31,16 @@
       },
       "imports": [],
       "versionPragmas": [
-        "^0.8.0"
+        ">=0.4.22 <0.9.0"
       ],
       "artifacts": [
-        "Token"
+        "console"
       ]
     },
-    "/home/bantino/Scrivania/Progetti/HardHat-Esempi/contracts/FileSystem.sol": {
-      "lastModificationDate": 1713395642777,
-      "contentHash": "4e32d76268062c834867b1869861c699",
-      "sourceName": "contracts/FileSystem.sol",
+    "/home/bantino/Progetti/HardHat-Esempi/contracts/FileStorage.sol": {
+      "lastModificationDate": 1727981659466,
+      "contentHash": "ea4dc2e053f731b92129e1f367d868fc",
+      "sourceName": "contracts/FileStorage.sol",
       "solcConfig": {
         "version": "0.8.24",
         "settings": {
@@ -70,7 +70,7 @@
         "^0.8.0"
       ],
       "artifacts": [
-        "FileSystem"
+        "FileStorage"
       ]
     }
   }
