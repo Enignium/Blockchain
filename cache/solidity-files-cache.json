@@ -1,50 +1,13 @@
 {
   "_format": "hh-sol-cache-2",
   "files": {
-    "/home/bantino/Progetti/HardHat-Esempi/node_modules/hardhat/console.sol": {
-      "lastModificationDate": 1713306396500,
-      "contentHash": "896f68942c3a20e9ae3c3c5bfd3add54",
-      "sourceName": "hardhat/console.sol",
-      "solcConfig": {
-        "version": "0.8.24",
-        "settings": {
-          "evmVersion": "paris",
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        ">=0.4.22 <0.9.0"
-      ],
-      "artifacts": [
-        "console"
-      ]
-    },
-    "/home/bantino/Progetti/HardHat-Esempi/contracts/FileStorage.sol": {
-      "lastModificationDate": 1727981659466,
-      "contentHash": "ea4dc2e053f731b92129e1f367d868fc",
+    "/home/bantino/Progetti/hardhat-esempio/contracts/FileStorage.sol": {
+      "lastModificationDate": 1728425514803,
+      "contentHash": "91add263300a8aea15d5946e248fc135",
       "sourceName": "contracts/FileStorage.sol",
       "solcConfig": {
-        "version": "0.8.24",
+        "version": "0.8.4",
         "settings": {
-          "evmVersion": "paris",
           "optimizer": {
             "enabled": false,
             "runs": 200
