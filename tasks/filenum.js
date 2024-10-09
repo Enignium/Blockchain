@@ -1,7 +1,6 @@
 const { task } = require("hardhat/config");
 
-task("get", "le cose forse hanno senso")
-  .addPositionalParam("id")
+task("filenum", "le cose forse hanno senso")
 
   .setAction(async (taskArgs) => {
 
@@ -13,15 +12,6 @@ task("get", "le cose forse hanno senso")
     // Connettiti al contratto già deployato
     const contract = FileStorage.attach(contractAddress);
     filenum = await contract.getFileNum()
-
-    if(taskArgs.id < filenum){
-
-    // Chiama la funzione uploadFile con i parametri forniti
-        const [name, content, owner] = await contract.getFile(taskArgs.id);
-        console.log(`${name},${content}`);
-    }
-    else{
-        console.log(`_,_`);
-    }
+    console.log(filenum);
     
   });

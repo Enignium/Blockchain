@@ -3,6 +3,7 @@ require("@nomicfoundation/hardhat-toolbox");
 
 require("./tasks/get");
 require("./tasks/upload");
+require("./tasks/filenum")
 
 
 module.exports = {
