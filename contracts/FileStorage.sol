@@ -31,4 +31,5 @@ contract FileStorage {
     function getFileNum() public view returns (uint) {
         return (fileCount);
     }
+    
 }
