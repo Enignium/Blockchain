@@ -15,7 +15,8 @@
   "dependencies": {
     "@nomicfoundation/hardhat-ethers": "^3.0.8",
     "dotenv": "^16.4.5",
-    "ethers": "^6.13.3",
-    "prompt-sync": "^4.2.0"
+    "ethers": "^6.13.4",
+    "prompt-sync": "^4.2.0",
+    "utf8": "^3.0.0"
   }
 }

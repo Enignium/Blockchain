@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/home/bantino/Progetti/hardhat-esempio/contracts/FileStorage.sol": {
-      "lastModificationDate": 1728427001366,
-      "contentHash": "b1aacda7dd0dba4617922fffbe494a01",
+      "lastModificationDate": 1729122109879,
+      "contentHash": "2b0a693cb5dd20673067e8da7ac98b79",
       "sourceName": "contracts/FileStorage.sol",
       "solcConfig": {
         "version": "0.8.4",
@@ -34,6 +34,41 @@
       ],
       "artifacts": [
         "FileStorage"
+      ]
+    },
+    "/home/bantino/Progetti/hardhat-esempio/contracts/FileStorage_old.sol": {
+      "lastModificationDate": 1729116232814,
+      "contentHash": "e469b02360ddf6401baaff07ec0b65ff",
+      "sourceName": "contracts/FileStorage_old.sol",
+      "solcConfig": {
+        "version": "0.8.4",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "FileStorage_old"
       ]
     }
   }
