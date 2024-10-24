@@ -4,7 +4,7 @@ require("@nomicfoundation/hardhat-toolbox");
 require("./tasks/get");
 require("./tasks/upload");
 require("./tasks/spaceLeft")
-
+require("./tasks/stress")
 
 module.exports = {
   solidity: "0.8.4",
