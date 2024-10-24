@@ -24,10 +24,6 @@ task("stress", "come il nostro")
     const linkTime = Date.now();
 
     const contentBuffer = Buffer.alloc(parseInt(taskArgs.fileLenght)).fill(1)
-    const fileName = "f".repeat(parseInt(taskArgs.fileNameLenght) - 1) + "0"; // usato solo per la stima del gas
-    
-    //const estimatedGas = await contractWithSigner.estimateGas.uploadFile(fileName, contentBuffer);
-
 
      for(i = 0; i < taskArgs.fileNum;i++){
 
