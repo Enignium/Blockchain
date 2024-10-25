@@ -2,7 +2,7 @@ const { task } = require("hardhat/config");
 require("dotenv").config();
 
 
-task("upload", "non so più niente")
+task("upload", "testo")
   .addPositionalParam("name")
   .addPositionalParam("content")
   .setAction(async (taskArgs) => {
