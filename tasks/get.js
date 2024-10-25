@@ -1,6 +1,6 @@
 const { task } = require("hardhat/config");
 require("dotenv").config();
-task("get", "le cose forse hanno senso")
+task("get", "testo")
   .addPositionalParam("id")
   .setAction(async (taskArgs) => {
     const contractAddress = "0x5fbdb2315678afecb367f032d93f642f64180aa3";
