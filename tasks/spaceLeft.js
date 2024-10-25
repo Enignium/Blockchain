@@ -8,6 +8,6 @@ task("spaceLeft", "memoria")
     const account = process.env.ACCOUNT_ADDRESS;
     const signer = await ethers.getSigner(account);
     const contractWithSigner = contract.connect(signer);
-    spaceleft = await contractWithSigner.getSpaceLeft()
+    spaceleft = await contractWithSigner.getSpaceLeft();
     console.log(spaceleft);
   });
