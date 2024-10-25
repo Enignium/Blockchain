@@ -15,7 +15,6 @@ task("upload", "testo")
     const contractWithSigner = contract.connect(signer);
     const contentBytes = Buffer.from(taskArgs.content, 'utf-8');
     const spaceLeft = await contractWithSigner.getSpaceLeft();
-    
     if(BigInt(spaceLeft) - BigInt(contentBytes.length)  > 0){
       const tx = await contractWithSigner.uploadFile(taskArgs.name, contentBytes);
       await tx.wait();
