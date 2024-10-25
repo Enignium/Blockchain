@@ -1,6 +1,5 @@
 const { task } = require("hardhat/config");
 require("dotenv").config();
-
 task("get", "le cose forse hanno senso")
   .addPositionalParam("id")
   .setAction(async (taskArgs) => {
