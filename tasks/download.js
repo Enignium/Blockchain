@@ -18,7 +18,7 @@ task("download", "testo")
 
     if (!fs.existsSync('./download')) {
         fs.mkdirSync('./download');
-      }
+    }
 
     fs.writeFileSync("./download/" + taskArgs.id, contentBuffer); 
     

@@ -3,7 +3,7 @@ pragma solidity ^0.8.0; //Specifica quale versione del compilatore può compilar
 
 contract FileStorage {
 
-    uint maxSpace = 1048576; //1 MB
+    uint maxSpace = 2**20; //1 MB
 
     struct File {
         bytes content;
@@ -18,16 +18,17 @@ contract FileStorage {
 
     mapping(address => FileSpace) public users;
     
-    //modificatore memory : indica che una variabile esiste solo durante l'esecuzione della funzione ed eliminata una volta terminata
     function uploadFile(string memory name, bytes memory content) public {
         
-            if(users[msg.sender].occupiedSpace + content.length < maxSpace){
-                users[msg.sender].files[name] = File(content);
-                users[msg.sender].occupiedSpace += content.length;
-            }
+        uint newFileSize = content.length;
+        uint currentFileSize = users[msg.sender].files[name].content.length;
+        uint newOccupiedSpace = users[msg.sender].occupiedSpace + newFileSize - currentFileSize;
+        require(newOccupiedSpace <= maxSpace, "Spazio massimo superato"); 
+
+        users[msg.sender].occupiedSpace = newOccupiedSpace;
+        users[msg.sender].files[name] = File(content);
     }
 
-    //modificatore view: indica che la funzione quando chiamata può solo leggere lo stato del contratto ma non modificarlo
     function getFile(string memory name) public view returns (bytes memory) {
         File memory f = users[msg.sender].files[name];
         return (f.content);
