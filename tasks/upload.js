@@ -17,9 +17,9 @@ task("upload", "Carica un file")
 
     const contentBytes = fs.readFileSync(taskArgs.path);
 
-
+    const gasLimit = 2000000;
     if(BigInt(spaceLeft) - BigInt(contentBytes.length)  > 0){
-      const tx = await contractWithSigner.uploadFile(path.basename(taskArgs.path), contentBytes);
+      const tx = await contractWithSigner.uploadFile(path.basename(taskArgs.path), contentBytes, { gasLimit });
       await tx.wait();
 
       console.log(`File caricato: ${path.basename(taskArgs.path)}`);

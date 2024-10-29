@@ -1,0 +1,8 @@
+task("gasRemaining", "Mostra il gas rimanente nel blocco attuale")
+  .setAction(async () => {
+    const block = await ethers.provider.getBlock("latest");
+    const gasUsed = block.gasUsed;
+    const gasLimit = block.gasLimit;
+    const gasRemaining = gasLimit - gasUsed
+    console.log("Gas rimanente nel blocco:", gasRemaining.toString());
+  });

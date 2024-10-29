@@ -24,9 +24,11 @@ task("uploadString", "Carica un file con contenuto una stringa di testo passata 
 
     const spaceLeft = await contractWithSigner.getSpaceLeft();
     
+    const gasLimit = 2000000;
+
     if(BigInt(spaceLeft) - BigInt(contentBytes.length)  > 0){
 
-      const tx = await contractWithSigner.uploadFile(taskArgs.name, contentBytes);
+      const tx = await contractWithSigner.uploadFile(taskArgs.name, contentBytes,{ gasLimit });
 
       await tx.wait();
 
