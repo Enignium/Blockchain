@@ -28,7 +28,7 @@ task("stressVR", "controllo prestazioni")
     const gasLimit = 2000000;
     var tx;
 
-    var sleepTime = 500;
+    var sleepTime = 250;
     const dec = sleepTime/taskArgs.fileNum;
 
     const sendingTime =  Date.now();
