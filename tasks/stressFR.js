@@ -1,7 +1,7 @@
 const { task } = require("hardhat/config");
 require("dotenv").config();
 
-task("testFR", "controllo prestazioni")
+task("stressFR", "controllo prestazioni")
   .addPositionalParam("fileNum")
   .addPositionalParam("fileNameLenght")
   .addPositionalParam("fileLenght")
@@ -29,6 +29,7 @@ task("testFR", "controllo prestazioni")
     var tx;
 
     const sendingTime =  Date.now();
+    
     for (let i = 0; i < taskArgs.fileNum; i++) {
       tx = await contractWithSigner.uploadFile("f".repeat(taskArgs.fileNameLenght - 1) + i, contentBuffer, { gasLimit });
       await new Promise(resolve => setTimeout(resolve, 250));
