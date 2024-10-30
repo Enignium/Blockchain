@@ -13,12 +13,12 @@ module.exports = {
   defaultNetwork: "localhost", 
   networks: {
     hardhat: {
-    mining: {
-      auto: false,
-      gas: "auto",
-      interval: 5000
-    }
-  },
+      mining: {
+        auto: false,
+        gas: "auto",
+        interval: 5000
+        }
+      },
     localhost: {
       url: "http://127.0.0.1:8545"
     },
