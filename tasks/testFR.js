@@ -1,7 +1,7 @@
 const { task } = require("hardhat/config");
 require("dotenv").config();
 
-task("stressFR", "come sì")
+task("testFR", "controllo prestazioni")
   .addPositionalParam("fileNum")
   .addPositionalParam("fileNameLenght")
   .addPositionalParam("fileLenght")
