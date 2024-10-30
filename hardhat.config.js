@@ -4,8 +4,8 @@ require("./tasks/get");
 require("./tasks/upload");
 require("./tasks/uploadString");
 require("./tasks/spaceLeft")
-require("./tasks/stressFR")
-require("./tasks/stress")
+require("./tasks/testFR")
+require("./tasks/test")
 require("./tasks/download")
 
 module.exports = {
