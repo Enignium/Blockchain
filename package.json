@@ -17,6 +17,7 @@
     "dotenv": "^16.4.5",
     "ethers": "^6.13.4",
     "prompt-sync": "^4.2.0",
+    "randomstring": "^1.3.0",
     "utf8": "^3.0.0"
   }
 }

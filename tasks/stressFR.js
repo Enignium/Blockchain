@@ -1,10 +1,11 @@
 const { task } = require("hardhat/config");
+
 require("dotenv").config();
 
 task("stressFR", "controllo prestazioni")
   .addPositionalParam("fileNum")
-  .addPositionalParam("fileNameLenght")
   .addPositionalParam("fileLenght")
+  .addPositionalParam("averageSleepTime")
 
   .setAction(async (taskArgs) => {
 
@@ -27,20 +28,32 @@ task("stressFR", "controllo prestazioni")
 
     const gasLimit = 2000000;
     var tx;
+    
+    var t,c;
+
+    var randomstring = require("randomstring");
 
     const sendingTime =  Date.now();
     
     for (let i = 0; i < taskArgs.fileNum; i++) {
-      tx = await contractWithSigner.uploadFile("f".repeat(taskArgs.fileNameLenght - 1) + i, contentBuffer, { gasLimit });
-      await new Promise(resolve => setTimeout(resolve, 250));
+      
+      c = Math.random();
+      //c num casuale 0 ad 1 t= -r *ln(c)
+      t = -taskArgs.averageSleepTime * Math.log(c);
+      
+      tx = await contractWithSigner.uploadFile(randomstring.generate(15) + i, contentBuffer, { gasLimit });
+      
+
+      await new Promise(resolve => setTimeout(resolve, t));
 
     }
-    const sentTime = Date.now();
 
     await tx.wait();
 
     const endTime = Date.now();
-    const timeToSend = (sentTime - sendingTime)/taskArgs.fileNum;
+
+    const ResponseTime = (endTime - sendingTime)/taskArgs.fileNum;
+
     const timeToLink = linkTime - startTime;
     const execTime = endTime - linkTime;
     const totalTime = endTime - startTime;
@@ -50,6 +63,6 @@ task("stressFR", "controllo prestazioni")
       "\nTempo per collegarsi: " + timeToLink + " ms" + 
       "\nTempo di esecuzione dal collegamento: " + execTime + " ms" + 
       "\nTempo di esecuzione totale: " + totalTime + " ms" +
-      "\nCon rate di invio : " + 1/timeToSend);
+      "\nCon rate di risposta : " + 1/ResponseTime);
 
 });

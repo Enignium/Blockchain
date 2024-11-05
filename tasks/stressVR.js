@@ -1,10 +1,11 @@
 const { task } = require("hardhat/config");
+
 require("dotenv").config();
 
 task("stressVR", "controllo prestazioni")
   .addPositionalParam("fileNum")
-  .addPositionalParam("fileNameLenght")
   .addPositionalParam("fileLenght")
+  .addPositionalParam("averageSleepTime")
 
   .setAction(async (taskArgs) => {
 
@@ -27,48 +28,37 @@ task("stressVR", "controllo prestazioni")
 
     const gasLimit = 2000000;
     var tx;
+    
+    var t,c;
 
-    var sleepTime = 250;
-    const dec = sleepTime/taskArgs.fileNum;
+    var randomstring = require("randomstring");
 
-    const sendingTime =  Date.now();
-    var firstTransactionTime;
-    var LastTransactionTime;
-    var LastTransactionStart;
+    for(let j = 0; j < 20; j++){
+      const sendingTime =  Date.now();
+      
+      for (let i = 0; i < taskArgs.fileNum; i++) {
+        
+        c = Math.random();
+        //c num casuale 0 ad 1 t= -r *ln(c)
+        t = -parseInt((taskArgs.averageSleepTime) - (j*25)) * Math.log(c);
+        
+        tx = await contractWithSigner.uploadFile(randomstring.generate(15) + i, contentBuffer, { gasLimit });
+        
 
-    for (let i = 0; i < taskArgs.fileNum; i++ , sleepTime -= dec) {
+        await new Promise(resolve => setTimeout(resolve, t));
 
-      if(i == taskArgs.fileNum - 1){
-        LastTransactionStart = Date.now();
       }
 
-      tx = await contractWithSigner.uploadFile("f".repeat(taskArgs.fileNameLenght - 1) + i, contentBuffer, { gasLimit });
-      await new Promise(resolve => setTimeout(resolve, sleepTime));
-      
-      if(i == 0)
-        firstTransactionTime = Date.now() - sendingTime;
+      await tx.wait();
 
-      if(i == taskArgs.fileNum - 1)
-        LastTransactionTime = Date.now() - LastTransactionStart;
-    }
+      const endTime = Date.now();
 
-    const sentTime = Date.now();
+      const ResponseTime = (endTime - sendingTime)/taskArgs.fileNum;
 
-    await tx.wait();
 
-    const endTime = Date.now();
-    const timeToSend = (sentTime - sendingTime)/taskArgs.fileNum;
-    const timeToLink = linkTime - startTime;
-    const execTime = endTime - linkTime;
-    const totalTime = endTime - startTime;
+      console.log("Caricati " + taskArgs.fileNum +
+        "\nRate di invio medio: " + (1/(parseInt(taskArgs.averageSleepTime) - (j * 25))) +
+        "\nRate di risposta : " + 1/ResponseTime);
 
-    console.log("Caricati " + taskArgs.fileNum + " file con keys di lunghezza " + taskArgs.fileNameLenght + 
-      "\nLunghezza contenuto: " + taskArgs.fileLenght + " bytes" +
-      "\nTempo per collegarsi: " + timeToLink + " ms" + 
-      "\nTempo di esecuzione dal collegamento: " + execTime + " ms" + 
-      "\nTempo di esecuzione totale: " + totalTime + " ms" +
-      "\nCon rate di invio Medio: " + 1/timeToSend +
-      "\nRate di invio iniziale: " + 1/firstTransactionTime +
-      "\nRate di invio finale " + 1/LastTransactionTime);
-
+  }
 });
