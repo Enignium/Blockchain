@@ -3,7 +3,7 @@ pragma solidity ^0.8.0; //Specifica quale versione del compilatore può compilar
 
 contract FileStorage {
 
-    uint maxSpace = 2**20; //1 MB
+    uint maxSpace = 2**30 * 5 ; //5 GB
 
     struct File {
         bytes content;

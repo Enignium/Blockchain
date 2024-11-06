@@ -1,13 +1,24 @@
 const { task } = require("hardhat/config");
 
+
+
 require("dotenv").config();
 
 task("stressVR", "controllo prestazioni")
   .addPositionalParam("fileNum")
   .addPositionalParam("fileLenght")
   .addPositionalParam("averageSleepTime")
+  .addPositionalParam("iterations")
 
   .setAction(async (taskArgs) => {
+
+    const fs = require('fs');
+
+    var data = 
+      {
+        x: [],
+        y: [],
+      };
 
     const startTime = Date.now();
 
@@ -33,7 +44,7 @@ task("stressVR", "controllo prestazioni")
 
     var randomstring = require("randomstring");
 
-    for(let j = 0; j < 20; j++){
+    for(let j = 0; j < parseInt(taskArgs.iterations); j++){
       const sendingTime =  Date.now();
       
       for (let i = 0; i < taskArgs.fileNum; i++) {
@@ -53,12 +64,18 @@ task("stressVR", "controllo prestazioni")
 
       const endTime = Date.now();
 
-      const ResponseTime = (endTime - sendingTime)/taskArgs.fileNum;
+      const avgSendingTime = (parseInt(taskArgs.averageSleepTime) - (j * (parseInt(taskArgs.averageSleepTime)/taskArgs.iterations)));
+      const responseTime = (endTime - sendingTime)/taskArgs.fileNum;
 
+      data.x.push(1/avgSendingTime);
+      data.y.push(1/responseTime);
 
       console.log("Caricati " + taskArgs.fileNum +
-        "\nRate di invio medio: " + (1/(parseInt(taskArgs.averageSleepTime) - (j * 25))) +
-        "\nRate di risposta : " + 1/ResponseTime);
+        "\nRate di invio medio: " + 1/avgSendingTime +
+        "\nRate di risposta : " + 1/responseTime);
 
   }
+
+  fs.writeFileSync('./plot/data.json', JSON.stringify(data));
+
 });
