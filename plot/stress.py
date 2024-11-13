@@ -1,64 +1,67 @@
 import subprocess
 import time
+import math
+import random
 from concurrent.futures import ThreadPoolExecutor
 import threading
 import json
 
 total_response_time = 0
-total_time_to_send = 0  
+
 lock = threading.Lock()
 
 def run_upload_task():
-    global total_response_time, total_time_to_send
 
+    global total_response_time
     
-    sending_time = time.time()
-    
-    
-    process = subprocess.Popen(['npx', 'hardhat', 'uploadRandom', '100'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-    
-    sent_time = time.time()
-    
-    time_to_send = (sent_time - sending_time) * 1000
+    start_time = time.time()
 
-    print(f"Tempo di invio della richiesta: {time_to_send:.2f} ms")
-
-    process.communicate() #Aspetta il completamento dello script
+    result = subprocess.run(['npx','hardhat', 'uploadRandom' ,'100'], capture_output=True, text=True)
 
     end_time = time.time()
-    
-    response_time = (end_time - sending_time) * 1000
 
-    print(f"Tempo di risposta: {response_time:.2f} ms")
+    response_time = (end_time - start_time) * 1000
+    
+    print(f"Tempo di esecuzione: {response_time:.2f} ms")
 
     with lock:
         total_response_time += response_time
-        total_time_to_send += time_to_send
 
-def execute_in_parallel(num_executions):
+def execute_in_parallel(num_executions, avg_sleep_time):
+
+    threads = []
 
     with ThreadPoolExecutor(max_workers=num_executions) as executor:
-        threads = [executor.submit(run_upload_task) for _ in range(num_executions)]
+        
+        
+        for i in range(num_executions):
+            
+            threads.append(executor.submit(run_upload_task))
+            c = random.random() # da 0 ad 1
+            t = -avg_sleep_time * math.log(c)
+            time.sleep(t / 1000)
+
         for thread in threads:
-            thread.result() 
+            thread.result() #join su tutti i thread
 
 
 if __name__ == "__main__":
 
     data = {"x":[], "y":[]}
-    for i in range(0, 5):
+    for i in range(1, 20):
 
-        num_executions = 100
-        execute_in_parallel(num_executions)
-        avg_time_to_send = total_time_to_send / num_executions
+        num_executions = 1024
+        avg_sleep_time = i*25
+        avg_sending_rate = 1/avg_sleep_time
+        execute_in_parallel(num_executions, avg_sleep_time)
+        
         avg_response_time = total_response_time / num_executions
-        avg_sending_rate = 1/avg_time_to_send
-        print(f"Tempo medio di invio: {avg_time_to_send:.2f} ms")
-        print(f"Tempo medio di risposta: {avg_response_time:.2f} ms")
+
+        print(f"Rate medio di invio: {avg_sending_rate:.5f} ms")
+        print(f"Tempo medio di risposta: {avg_response_time:.5f} ms")
         data["x"].append(avg_sending_rate)
         data["y"].append(avg_response_time)
         total_response_time = 0
-        total_time_to_send = 0  
 
     with open("data.json", "w") as json_file:
         json.dump(data, json_file, indent=4)
