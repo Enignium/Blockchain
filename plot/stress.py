@@ -16,7 +16,6 @@ def run_upload_task():
     end_time = time.time()
     response_time = (end_time - start_time) * 1000
     print(f"Tempo di esecuzione: {response_time:.2f} ms")
-
     with lock:
         total_response_time += response_time
 
