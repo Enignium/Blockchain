@@ -33,8 +33,8 @@ def execute_in_parallel(num_executions, avg_sleep_time):
 
 if __name__ == "__main__":
     data = {"x":[], "y":[]}
-    for i in range(1, 20):
-        num_executions = 1024
+    for i in range(1, 100):
+        num_executions = 100
         avg_sleep_time = i*25
         avg_sending_rate = 1/avg_sleep_time
         execute_in_parallel(num_executions, avg_sleep_time)

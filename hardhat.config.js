@@ -19,7 +19,7 @@ module.exports = {
         }
       },
     localhost: {
-      url: "http://127.0.0.1:8545"
+      url: "http://192.168.1.9:8545"
     },
   },
 };
