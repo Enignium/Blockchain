@@ -2,24 +2,23 @@
 #include <unistd.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 typedef struct file {
-    char nome[256];
     char contenuto[256];
 } file_t;
 
-const char* BASE_DIR = "/home/bantino/Progetti/hardhat-esempio"; 
+const char* BASE_DIR = "/home/bantino/Progetti/hardhat-esempio"; //TODO
 
-file_t get_file(unsigned int file_id) {
+file_t get_file(const char* file_name) {
 
     file_t file;
-    strcpy(file.nome, "_");
-    strcpy(file.contenuto, "_");
+    strcpy(file.contenuto, ".");
 
     char buffer[512];
     char command[512]; 
 
-    sprintf(command, "cd %s && npx hardhat get %u", BASE_DIR, file_id);
+    sprintf(command, "cd %s && npx hardhat get %s", BASE_DIR, file_name);
 
     FILE* pipe = popen(command, "r");
 
@@ -28,21 +27,22 @@ file_t get_file(unsigned int file_id) {
         return file;
     }
 
-    int bytes_read = fread(buffer, 1, sizeof(buffer) - 1, pipe);
+    int bytes_read = fread(buffer, 1, sizeof(buffer) - 1, pipe); //TODO, LEGGERE DIM byte scritti nella pipe
     buffer[bytes_read] = '\0';
-    char *saveptr;
-    strcpy(file.nome, strtok_r(buffer, ",", &saveptr));
-    strcpy(file.contenuto, strtok_r(NULL, ",", &saveptr));
+
+    strcpy(file.contenuto, buffer);
     pclose(pipe);
     return file;
 }
 
-unsigned int get_file_num() {
-    char buffer[256];
-    unsigned long filenum;
 
-    char command[512];
-    sprintf(command, "cd %s && npx hardhat filenum", BASE_DIR);
+bool is_file_valid(const char* name) { 
+    
+    char buffer[65536]; //TODO magari allocare dinamicamente
+    char* saveptr;
+
+    char command[256]; 
+    sprintf(command, "cd %s && npx hardhat getnames", BASE_DIR);
 
     FILE* pipe = popen(command, "r");
     if (pipe == NULL) {
@@ -50,24 +50,18 @@ unsigned int get_file_num() {
         return 0;
     }
 
-    int bytes_read = fread(buffer, 1, sizeof(buffer) - 1, pipe);
+    int bytes_read = fread(buffer, 1, sizeof(buffer) - 1, pipe); //come sopra
     buffer[bytes_read] = '\0';
-    
-    filenum = strtoul(buffer, NULL, 10);
-    return filenum;
-}
 
+    char *str = strtok_r(buffer,",",&saveptr);
 
-int is_file_valid(const char* name) {
-    unsigned int filenum = get_file_num();
-    file_t curr_file;
+    while((str != NULL)){
 
-    for (unsigned int i = 0; i < filenum; i++) {
-        curr_file = get_file(i);
-        if (strcmp(curr_file.nome, name) == 0) {
-            return i;
-        }
+        if(strcmp(str,name) == 0)
+            return true;
+        str = strtok_r(NULL,",",&saveptr);
     }
-    return -1;
+
+    return false;
 }
 

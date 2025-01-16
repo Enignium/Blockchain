@@ -4,7 +4,8 @@
         "unistd.h": "c",
         "string.h": "c",
         "stddef.h": "c",
-        "fops.h": "c"
+        "fops.h": "c",
+        "fuse.h": "c"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

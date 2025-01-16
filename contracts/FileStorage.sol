@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0; //Specifica quale versione del compilatore può compilare questo contratto
+pragma solidity ^0.8.0; 
 
 contract FileStorage {
 
@@ -12,6 +12,8 @@ contract FileStorage {
     struct FileSpace {
         
         mapping(string => File) files;
+        string[] file_names;
+        uint file_num;
         uint occupiedSpace; 
         
     }
@@ -27,12 +29,42 @@ contract FileStorage {
 
         users[msg.sender].occupiedSpace = newOccupiedSpace;
         users[msg.sender].files[name] = File(content);
+
+        if(!isFileAlreadyIn(name)){
+            users[msg.sender].file_names.push(name);
+            users[msg.sender].file_num++;
+        }
+
     }
 
     function getFile(string memory name) public view returns (bytes memory) {
         File memory f = users[msg.sender].files[name];
         return (f.content);
     }
+
+    function getFileNames() public view returns (string memory){
+        
+        string memory names = "";
+
+        for(uint i = 0; i < users[msg.sender].file_num; i++){
+           names = string(abi.encodePacked(names, users[msg.sender].file_names[i]));
+           names = string(abi.encodePacked(names, ","));
+        }
+
+        return names;
+
+    }
+
+    function isFileAlreadyIn(string memory name) private view returns (bool){
+        
+        for (uint256 i = 0; i < users[msg.sender].file_num; i++) {
+            if (keccak256(abi.encodePacked(users[msg.sender].file_names[i])) == keccak256(abi.encodePacked(name))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     function getSpaceLeft() public view returns (uint) {
         return maxSpace - users[msg.sender].occupiedSpace;

@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/home/bantino/Progetti/hardhat-esempio/contracts/FileStorage.sol": {
-      "lastModificationDate": 1730846098892,
-      "contentHash": "e7693bde1a883f6412c006c3274b4d7a",
+      "lastModificationDate": 1736867424027,
+      "contentHash": "781abd5e7ec60f403e6c3cdaada67e9a",
       "sourceName": "contracts/FileStorage.sol",
       "solcConfig": {
         "version": "0.8.4",

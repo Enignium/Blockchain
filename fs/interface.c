@@ -31,14 +31,14 @@ static int hello_getattr(const char *path, struct stat *stbuf,
 		return res;
 	}
 
-	int id = is_file_valid(path+1); //<---- molto inefficente , ogni volta che cerca informazioni su un file scorre tra tutti i file presenti nel contratto 
-		if (id == -1) {
+	bool file_valid = is_file_valid(path+1);
+		if (file_valid) {
 			printf("[ERROR] getattr: file non trovato: %s\n", path);
 			return -ENOENT;
 
 		}
 		else {
-			file_t curr_file = get_file(id);
+			file_t curr_file = get_file(path+1);
 			stbuf->st_mode = S_IFREG | 0755;
 			stbuf->st_nlink = 1;
 			stbuf->st_size = strlen(curr_file.contenuto);
@@ -65,12 +65,30 @@ static int hello_readdir(const char *path, void *buf, fuse_fill_dir_t filler,
 	filler(buf, ".", NULL, 0, 0);
 	filler(buf, "..", NULL, 0, 0);
 
-	file_t curr_file;
-	unsigned int filenum = get_file_num(); 
 
-	for (int i = 0; i < filenum; i++) { // <---- si potrebbe sostituire con una singola task che ritorna tutti i nomi dei vari file contenuti invece che che chiamare filenum volte la task
-		curr_file = get_file(i); 
-		filler(buf, curr_file.nome, NULL, 0, 0);
+	char command[256];
+	char buffer[65536];
+	char* saveptr;
+
+	sprintf(command, "cd %s && npx hardhat getnames", BASE_DIR);
+
+    FILE* pipe = popen(command, "r");
+    if (pipe == NULL) {
+        perror("Errore nell'aprire la pipe");
+        return 0;
+    }
+
+    int bytes_read = fread(buffer, 1, sizeof(buffer) - 1, pipe); //come sopra
+
+	buffer[bytes_read] = '\0';
+
+    char* filename = strtok_r(buffer,",",&saveptr);
+
+	while(filename != NULL){
+
+		filler(buf, filename, NULL, 0, 0);
+		filename = strtok_r(NULL,",",&saveptr);
+
 	}
 
 	return 0;
@@ -88,16 +106,16 @@ static int hello_read(const char *path, char *buf, size_t size, off_t offset,
 {
 	(void) fi;
 
-	int id;
+	bool valid;
 	size_t len;
 	printf("[INFO] read path: %s\n", path);
-	id = is_file_valid(path+1);
+	valid = is_file_valid(path+1);
 	
 
-	if(id == -1)
+	if(!valid)
 		return -ENOENT;
 
-	file_t curr_file = get_file(id);
+	file_t curr_file = get_file(path+1);
 
 	len = strlen(curr_file.contenuto);
 
@@ -114,7 +132,7 @@ static int hello_read(const char *path, char *buf, size_t size, off_t offset,
 }
 
 static const struct fuse_operations hello_oper = {
-	.init           = hello_init,
+	.init       = hello_init,
 	.getattr	= hello_getattr,
 	.readdir	= hello_readdir,
 	.open		= hello_open,
