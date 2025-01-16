@@ -38,9 +38,7 @@ file_t get_file(const char* file_name) {
 
 bool is_file_valid(const char* name) { 
     
-    char buffer[65536]; //TODO magari allocare dinamicamente
-    char* saveptr;
-
+    char buffer[512]; 
     char command[256]; 
     sprintf(command, "cd %s && npx hardhat getnames", BASE_DIR);
 
@@ -53,15 +51,12 @@ bool is_file_valid(const char* name) {
     int bytes_read = fread(buffer, 1, sizeof(buffer) - 1, pipe); //come sopra
     buffer[bytes_read] = '\0';
 
-    char *str = strtok_r(buffer,",",&saveptr);
+    printf("DEBUG INFO: '%s\n'",buffer);
 
-    while((str != NULL)){
+    if(strcmp(buffer,"true") == 0)
+        return true;
+    else
+        return false;
 
-        if(strcmp(str,name) == 0)
-            return true;
-        str = strtok_r(NULL,",",&saveptr);
-    }
-
-    return false;
 }
 

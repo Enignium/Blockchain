@@ -32,7 +32,7 @@ static int hello_getattr(const char *path, struct stat *stbuf,
 	}
 
 	bool file_valid = is_file_valid(path+1);
-		if (file_valid) {
+		if (!file_valid) {
 			printf("[ERROR] getattr: file non trovato: %s\n", path);
 			return -ENOENT;
 
@@ -88,7 +88,6 @@ static int hello_readdir(const char *path, void *buf, fuse_fill_dir_t filler,
 
 		filler(buf, filename, NULL, 0, 0);
 		filename = strtok_r(NULL,",",&saveptr);
-
 	}
 
 	return 0;

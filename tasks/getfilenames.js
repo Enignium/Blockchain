@@ -9,5 +9,7 @@ task("getnames", "aa")
     const signer = await ethers.getSigner(account);
     const contractWithSigner = contract.connect(signer);
     names = await contractWithSigner.getFileNames();
-    console.log(names);
+    for(let name in names){
+      console.log(name + ",");
+    }
   });

@@ -1,6 +1,5 @@
 import type {
   Artifacts,
-  BoundExperimentalHardhatNetworkMessageTraceHook,
   EIP1193Provider,
   EthereumProvider,
   HardhatConfig,
@@ -50,7 +49,6 @@ export async function createProvider(
   config: HardhatConfig,
   networkName: string,
   artifacts?: Artifacts,
-  experimentalHardhatNetworkMessageTraceHooks: BoundExperimentalHardhatNetworkMessageTraceHook[] = [],
   extenders: ProviderExtender[] = []
 ): Promise<EthereumProvider> {
   let eip1193Provider: EIP1193Provider;
@@ -108,12 +106,12 @@ export async function createProvider(
           hardhatNetConfig.initialDate !== undefined
             ? parseDateString(hardhatNetConfig.initialDate)
             : undefined,
-        experimentalHardhatNetworkMessageTraceHooks,
         forkConfig,
         forkCachePath:
           paths !== undefined ? getForkCacheDirPath(paths) : undefined,
         enableTransientStorage:
           hardhatNetConfig.enableTransientStorage ?? false,
+        enableRip7212: hardhatNetConfig.enableRip7212 ?? false,
       },
       {
         enabled: hardhatNetConfig.loggingEnabled,
