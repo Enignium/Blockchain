@@ -40,20 +40,26 @@ bool is_file_valid(const char* name) {
     
     char buffer[512]; 
     char command[256]; 
-    sprintf(command, "cd %s && npx hardhat getnames", BASE_DIR);
+    sprintf(command, "cd %s && npx hardhat exists %s", BASE_DIR, name);
 
     FILE* pipe = popen(command, "r");
     if (pipe == NULL) {
         perror("Errore nell'aprire la pipe");
         return 0;
     }
+    fseek(pipe,0,SEEK_END);
+    long size = ftell(pipe);
 
-    int bytes_read = fread(buffer, 1, sizeof(buffer) - 1, pipe); //come sopra
+    int bytes_read = fread(buffer, 1, size, pipe);
     buffer[bytes_read] = '\0';
 
-    printf("DEBUG INFO: '%s\n'",buffer);
+    
 
-    if(strcmp(buffer,"true") == 0)
+    char* saveptr;
+    char* str = strtok_r(buffer,",",&saveptr);
+    printf("DEBUG INFO: '%s'\n",str);
+
+    if(strcmp(str,"true") == 0)
         return true;
     else
         return false;

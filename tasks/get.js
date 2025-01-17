@@ -12,5 +12,5 @@ task("get", "testo")
     const content = await contractWithSigner.getFile(taskArgs.id);
     const hexString = content.replace(/^0x/, '');
     const stringa = Buffer.from(hexString,'hex');
-    console.log(`${stringa}`);
+    console.log(stringa);
   });

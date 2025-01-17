@@ -1,6 +1,7 @@
 const { task } = require("hardhat/config");
 require("dotenv").config();
-task("exists", "aa")
+task("exists", "name")
+  .addPositionalParam("name")
   .setAction(async (taskArgs) => {
     const contractAddress = "0x5fbdb2315678afecb367f032d93f642f64180aa3";
     const FileStorage = await ethers.getContractFactory("FileStorage");
@@ -8,6 +9,6 @@ task("exists", "aa")
     const account = process.env.ACCOUNT_ADDRESS;
     const signer = await ethers.getSigner(account);
     const contractWithSigner = contract.connect(signer);
-    exists = await contractWithSigner.isFileAlreadyIn();
-    console.log(exists);
+    exists = await contractWithSigner.isFileAlreadyIn(taskArgs.name);
+    console.log(',' + exists + ',');
   });

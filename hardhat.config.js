@@ -7,6 +7,7 @@ require("./tasks/spaceLeft")
 require("./tasks/uploadRandom.js")
 require("./tasks/download")
 require("./tasks/getfilenames")
+require("./tasks/fileExists")
 
 module.exports = {
   solidity: "0.8.4",

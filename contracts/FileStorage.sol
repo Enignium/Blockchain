@@ -42,7 +42,7 @@ contract FileStorage {
         return users[msg.sender].file_names;
     }
 
-    function isFileAlreadyIn(string memory name) private view returns (bool) {
+    function isFileAlreadyIn(string memory name) public view returns (bool) {
         return users[msg.sender].exists[name];
     }
 
