@@ -1,7 +1,11 @@
 import os
 from web3 import Web3
-from fuse import FUSE, Operations
+from fuse import FUSE, FuseOSError, Operations, LoggingMixIn
 import json
+from errno import ENOENT
+from stat import S_IFDIR, S_IFLNK, S_IFREG
+from time import time
+
 
 
 def get_contract():
@@ -32,11 +36,11 @@ class FileStorageFUSE(Operations):
         
 
 
-    def getattr(self, path):
-        """ Recupera i metadati di un file (come le dimensioni). """
+    def getattr(self, path, fh=None):
+        print("Getattr" + path)
         if path == '/':
             return {
-                'st_mode': 0o755 | 0o040000,  # Directory
+                'st_mode': 0o755 | S_IFDIR,  # Directory
                 'st_nlink': 2,
             }
         else:
@@ -44,24 +48,39 @@ class FileStorageFUSE(Operations):
             file_name = path[1:]
             exists = self.contract.functions.isFileAlreadyIn(file_name).call()
             if not exists:
-                raise FileNotFoundError
+                print(path + "NON TROVATO")
+                raise FuseOSError(ENOENT)
 
             file_content = self.contract.functions.getFile(file_name).call()
             return {
-                'st_mode': 0o444,  # File read-only
+                'st_mode': 0o444 | S_IFREG,  # File read-only
                 'st_size': len(file_content),
                 'st_nlink': 1,
             }
 
+    def open(self, path, flags):
+        print(f"Open chiamata per {path}")
+        ##file_name = path[1:]
+        ##exists = self.contract.functions.isFileAlreadyIn(file_name).call() --In teoria controlla getAttr prima
+        ##if not exists:
+            ##print(f"{path} NON TROVATO")
+            ##raise FuseOSError(ENOENT)
+        return 0
+
+
     def readdir(self, path, fh):
 
+        print("readdir" + path)
         if path != '/':
-            raise FileNotFoundError
-
+            print(path + "NON TROVATO")
+            raise FuseOSError(ENOENT)
+        
         file_names = self.contract.functions.getFileNames().call()
         return ['.', '..'] + file_names
 
     def read(self, path, size, offset, fh):
+
+        print("READ" + path)
 
         file_name = path[1:]
 
